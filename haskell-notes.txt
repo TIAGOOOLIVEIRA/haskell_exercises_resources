@@ -1,0 +1,239 @@
+https://github.com/osfameron
+https://www.haskell.org/documentation/
+https://github.com/tssm/up-to-date-real-world-haskell
+
+
+https://downloads.haskell.org/~debian/
+
+curl -sSL https://get.haskellstack.org/ | sh -s - -f
+
+https://www.linkedin.com/learning/learning-haskell-programming/discovering-haskell-with-ghci
+
+sudo apt-get install -y cabal-install-2.4 ghc-8.4.4
+
+sudo apt-get install haskell-stack
+
+ghci
+
+prepend 
+	1 : [2]
+	't': 'i': 'a': 'g': 'o' : []
+
+
+Prelude> :set editor vim
+*Main> :edit
+
+
+ghc test.hs 
+./test
+
+https://docs.haskellstack.org/en/stable/README/#how-to-install
+=+====================================
+
+stack new words
+
+stack init
+
+stack build
+
+.stack-work/dist/x86_64-linux/Cabal-2.4.0.1/build/words-exe/words-exe
+
+stack exec words-exe
+
+--edit & rebuild size of exe-> ghc-options: -threaded -rtsopts -with-rtsopts=-N -dynamic
+--edit test-suit, add build-depends: ,hspec
+
+vim words.cabal
+stack build
+
+ls -ltrh .stack-work/dist/x86_64-linux/Cabal-2.4.0.1/build/words/words
+
+Search engine
+https://hoogle.haskell.org/
+
+--in module you put the functions you want to be exposed for the execution host
+module Lib
+    ( someFunc
+     ,someString
+    ) where
+....
+
+*Main Lib> import Data.List
+*Main Lib Data.List> isInfixOf "HASKELL" "A A HASKELL PP"
+
+map length grid
+
+map findWordInLine grid
+map (findWordInLine "HASKELL") grid
+and [True, False, True]
+or [True, False, True]
+or (map (findWordInLine "HASKELL") grid)
+or (map (findWordInLine "PERL") grid)
+
+*Main Lib Data.List> outputGrid grid
+*Main Lib Data.List> reverse "__HASKELL____B_"
+
+*Main Lib Data.List> outputGrid (reverse grid)
+*Main Lib Data.List> outputGrid (map reverse grid)
+*Main Lib Data.List> findWord grid "PERL"
+*Main Lib Data.List> findWord grid "LREP"
+*Main Lib Data.List> map (findWord grid) languages 
+*Main Lib Data.List> findWords grid languages 
+
+https://hoogle.haskell.org/
+[[a]] -> [[a]]
+
+*Main Lib Data.List> :type transpose
+*Main Lib Data.List> outputGrid (transpose grid)
+
+*Main Lib Data.List> let prepend char line = char : line
+*Main Lib Data.List> map (prepend 'T') grid
+*Main Lib Data.List> outputGrid  (map (prepend 'T') grid)
+*Main Lib Data.List> outputGrid (transpose (skew grid))
+*Main Lib Data.List> outputGrid (map reverse grid)
+
+*Main Data Lib> [0,2..100]
+*Main Data Lib> [0..7]
+*Main Data Lib> [1..]
+*Main Data Lib> head [1..]
+*Main Data Lib> head $ tail [1..]
+*Main Data Lib> [1..] !! 100
+*Main Data Lib> take 10 [1..]
+*Main Data Lib> takeWhile (<100) [0..]
+*Main Data Lib> map (*3) [2..100]
+*Main Data Lib> take 10 $ map (*3) [1..]
+*Main Data Lib> filter div2 [1..100]
+*Main Data Lib> take 10 $ filter div2 [1..100]
+
+list monad
+
+*Main Data Lib Control.Monad> [ i * 2 | i <- [0..9] ]
+*Main Data Lib Control.Monad> [ i * 2 | i <- [0..9], div2 i ]
+*Main Data Lib Control.Monad> take 10 $ repeat 1
+*Main Data Lib Control.Monad> take 10 $ cycle [1,2,3]
+*Main Data Lib Control.Monad> map (take 10 . repeat) [1..10]
+*Main Data Lib Control.Monad> zip [1..10] ['a'..'j']
+*Main Data Lib Control.Monad> zip [1..10] ['a'..]
+*Main Data Lib Control.Monad> let row = [0..7]
+*Main Data Lib Control.Monad> let col = [0..7]
+*Main Data Lib Control.Monad> (row, col)
+
+https://wiki.haskell.org/List_comprehension
+list comprehension
+*Main Data Lib Control.Monad> [ (row, col) | col <- [0..7], row <- [0..7] ]
+*Main Data Lib Control.Monad> [ [ (row, col) | col <- [0..7] ] | row <- [0..7] ]
+
+:load src/WorkSheet.hs
+
+*Main Control.Monad> og rows8
+*Main Control.Monad> og cols8
+
+*Main Control.Monad> zip [0,1,2,3,4,5,6,7] [1,1,1,1,1,1,1,1]
+
+combine values in a tuple
+
+*Main Control.Monad> zipWith (,) [0,1,2,3,4,5,6,7] [1,1,1,1,1,1,1,1]
+*Main Control.Monad> zipWith zip rows8 cols8 
+
+*Main Control.Monad> (,) 1 2
+
+*Main Control.Monad> zipOverGrid coords grid
+
+*Main Control.Monad> (zipWith zip) coords grid
+*Main Control.Monad> (zipWith (zipWith(,))) coords grid
+*Main Control.Monad> (zipWith (zipWith Cell)) coords grid
+
+*Main Control.Monad> zipOverGridWith Cell coords grid
+*Main Control.Monad> og $ zipOverGridWith Cell coords grid
+
+*Main Data.List> Cell (0,0) 'Z'
+Cell (0,0) 'Z'
+*Main Data.List> cell2char $ Cell (0,0) 'Z'
+
+*Main Data.List> grid !! 2
+*Main Data.List> gridWithCoords grid !! 2
+*Main Data.List> "HASKELL" `isInfixOf` "___HASKELL___"
+*Main Data.List> "HASKELL" `isPrefixOf` "___HASKELL___"
+
+*Main Data.List> :t findWordInCellLinePrefix
+findWordInCellLinePrefix
+  :: [Cell] -> String -> [Cell] -> Maybe [Cell]
+*Main Data.List> let line = gridWithCoords grid !! 2
+*Main Data.List> line
+*Main Data.List>  findWordInCellLinePrefix [] "HASKELL" line
+*Main Data.List> drop 2 line
+*Main Data.List>  findWordInCellLinePrefix [] "HASKELL" $ drop 2 line
+
+*Main Data.List> findWordInLine "HASKELL" line
+*Main Data.List> grid !! 2 !! 3
+
+
+*Data Data.List> import Data.Maybe 
+*Data Data.List Data.Maybe> catMaybes [Just 1, Nothing, Nothing, Just 2]
+*Data Data.List Data.Maybe> listToMaybe []
+*Data Data.List Data.Maybe> listToMaybe [1,2]
+*Main Data.List Data.Maybe> findWord (gridWithCoords grid) "HASKELL"
+*Main Data.List Data.Maybe> findWord (gridWithCoords grid) "TIAGO"
+
+*Main Data Lib> import Data.Map
+
+*Main Data Lib> makeGame grid languages 
+*Main Data Lib> gameWords $makeGame grid languages 
+
+*Main Data Lib> Data.Map.lookup "HASKELL" dict
+*Main Data Lib> Data.Map.lookup "tiago" dict
+*Main Data Lib> Data.Map.keys dict
+*Main Data Lib> lenght $ Data.Map.keys dict
+
+*Main Data Lib> playGame game "HASKELL"
+
+*Main Data Lib> let game = makeGame grid languages 
+*Main Data Lib> formatGame game
+*Main Data Lib> putStrLn $ formatGame game
+*Main Data Lib> putStrLn $ formatGame $ playGame game "HASKELL"
+
+stack build
+stack exec words
+stack ghci
+
+
+*Main Data Lib> import System.Random 
+*Main Data Lib System.Random> newStdGen
+*Main Data Lib System.Random> gen <- newStdGen
+*Main Data Lib System.Random> gen
+*Main Data Lib System.Random> randomRs (1, 9) gen
+*Main Data Lib System.Random> take 10 $ randomRs (1, 9) gen
+*Main Data Lib System.Random> take 10 $ randomRs ('T', 'I') gen
+
+*Main Data Lib System.Random> gen <- newStdGen 
+*Main Data Lib System.Random> makeRandomGrid gen
+*Main Data Lib System.Random> r = makeRandomGrid gen
+*Main Data Lib System.Random> take 30 $ r !! 0
+*Main Data Lib System.Random> gen <- newStdGen 
+*Main Data Lib System.Random> r = makeRandomGrid gen
+*Main Data Lib System.Random> take 10 $ r !! 0
+"POTIITMKOK"
+*Main Data Lib System.Random> take 10 $ r !! 0
+"POTIITMKOK"
+*Main Data Lib System.Random> take 10 $ r !! 2
+"JOMIMNISNK"
+*Main Data Lib System.Random> take 10 $ r !! 4
+"RPOSTPIMSP"
+*Main Data Lib System.Random> take 10 $ r !! 0
+"POTIITMKOK"
+*Main Data Lib System.Random> 
+
+*Main Data Lib System.Random> zipOverGrid r grid
+
+*Main Data Lib System.Random> gen <- newStdGen
+*Main Data Lib System.Random> fillInBlanks gen grid
+*Main Data Lib System.Random> putStrLn . unlines $ fillInBlanks gen grid
+
+
+*Main Data Lib System.Random> game = makeGame grid languages
+*Main Data Lib System.Random> dict = gameWords game
+*Main Data Lib System.Random> dict
+
+monad for nested loop
+
+
